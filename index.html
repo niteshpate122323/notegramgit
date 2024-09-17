@@ -41,6 +41,7 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s ease;
+            object-fit: cover; /* Add this line to maintain aspect ratio */
         }
         .dark-mode .profile-picture {
             border-color: #333;
@@ -215,9 +216,9 @@
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -255,6 +256,80 @@
         .footer-tips {
             margin-top: 16px;
             font-style: italic;
+        }
+        .other-profiles {
+            margin-top: 30px;
+            border-top: 1px solid #dbdbdb;
+            padding-top: 20px;
+        }
+        .dark-mode .other-profiles {
+            border-top-color: #333;
+        }
+        .other-profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .other-profile {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .dark-mode .other-profile {
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+        .other-profile:hover {
+            transform: translateY(-3px);
+        }
+        .other-profile-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover; /* Add this line to maintain aspect ratio */
+        }
+        .other-profile-username {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .other-profile-bio {
+            font-size: 12px;
+            color: #8e8e8e;
+            margin-bottom: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-clamp: 2;
+            box-orient: vertical;
+        }
+        .dark-mode .other-profile-bio {
+            color: #b0b0b0;
+        }
+        .like-button {
+            background-color: #0095f6;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .like-button:hover {
+            background-color: #0081d6;
+        }
+        .like-button.liked {
+            background-color: #ed4956;
+        }
+        .like-button.liked:hover {
+            background-color: #c13584;
         }
         @media (max-width: 935px) {
             .container {
@@ -306,6 +381,14 @@
             .notes-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
+            .other-profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .delete-note {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+            }
         }
         @media (max-width: 480px) {
             .profile-picture {
@@ -331,6 +414,14 @@
             }
             .notes-grid {
                 grid-template-columns: 1fr;
+            }
+            .other-profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .delete-note {
+                width: 32px;
+                height: 32px;
+                font-size: 20px;
             }
         }
     </style>
@@ -382,6 +473,35 @@
                     </div>
                     <button class="edit-button" onclick="saveChanges()">Save</button>
                     <button class="cancel-button" onclick="toggleEdit()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="other-profiles">
+            <h2>Other Profiles</h2>
+            <div class="other-profiles-grid">
+                <div class="other-profile">
+                    <img src="https://via.placeholder.com/80" alt="User 1" class="other-profile-picture">
+                    <div class="other-profile-username">user1</div>
+                    <div class="other-profile-bio">Passionate photographer and traveler</div>
+                    <button class="like-button" onclick="toggleLike(this)">Like</button>
+                </div>
+                <div class="other-profile">
+                    <img src="https://via.placeholder.com/80" alt="User 2" class="other-profile-picture">
+                    <div class="other-profile-username">user2</div>
+                    <div class="other-profile-bio">Food lover and aspiring chef</div>
+                    <button class="like-button" onclick="toggleLike(this)">Like</button>
+                </div>
+                <div class="other-profile">
+                    <img src="https://via.placeholder.com/80" alt="User 3" class="other-profile-picture">
+                    <div class="other-profile-username">user3</div>
+                    <div class="other-profile-bio">Tech enthusiast and gadget reviewer</div>
+                    <button class="like-button" onclick="toggleLike(this)">Like</button>
+                </div>
+                <div class="other-profile">
+                    <img src="https://via.placeholder.com/80" alt="User 4" class="other-profile-picture">
+                    <div class="other-profile-username">user4</div>
+                    <div class="other-profile-bio">Fitness coach and nutrition expert</div>
+                    <button class="like-button" onclick="toggleLike(this)">Like</button>
                 </div>
             </div>
         </div>
@@ -471,6 +591,15 @@
             likeButton.disabled = true;
             likeButton.textContent = 'Liked';
             saveToLocalStorage();
+        }
+
+        function toggleLike(button) {
+            button.classList.toggle('liked');
+            if (button.classList.contains('liked')) {
+                button.textContent = 'Liked';
+            } else {
+                button.textContent = 'Like';
+            }
         }
 
         function saveToLocalStorage() {
